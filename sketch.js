@@ -13,14 +13,15 @@ function preload()
 
 function setup() {
   database = firebase.database();
-  foodStock = database.ref("food");
-  foodStock.on("value",readstock);
+
+ 
   createCanvas(800,600);
   dog =  createSprite(150,400);
   dog.addImage(dogImg);
-
   dog.scale = 0.3
   
+  foodStock = database.ref("food");
+  foodStock.on("value",readstock);
 }
 
 
@@ -33,25 +34,27 @@ text("Hey Hi Everyone I am Shadow !! ",350,50);
 
 textSize(20);
 fill("black");
-text("Press the UP_ARROW to play with shadow ",350,390);
+text("Press the UP_ARROW to feed  shadow ",350,390);
+
+text("Food remaining : "+foodS,170,200);
 
 //fill("black");
 //text("Press the DOWN_ARROW to feed shadow ",300,350);
 
 drawSprites();  
-  //add styles here
+ /* //add styles here
   if (keyWentDown(UP_ARROW)){
     writestock(foodS);
     dog.addImage(happyDogImg);
   // fill("black");
     //text("It is playing time !!",350,50);
    // dog.scale = 0.2 ;
-  }
+  }*/
 
- /* if (keyWentDown(DOWN_ARROW)){
+  if (keyWentDown(DOWN_ARROW)){
     writestock(foodS);
     dog.addImage(eatingDog);
-  }*/
+  }
 
 }
 
@@ -60,6 +63,11 @@ function readstock(data){
 }
 
 function writestock(x){
+  if(x<=0){
+    x=0;
+  }else{
+    x=x-1;
+  } 
   database.ref("/").update({
     food:x 
   })
